@@ -9,7 +9,6 @@ import java.io.IOException;
 
 @SpringBootApplication
 public class OtusApplication {
-
     public static void main(String[] args) throws IOException {
         var context = SpringApplication.run(OtusApplication.class, args);
 
