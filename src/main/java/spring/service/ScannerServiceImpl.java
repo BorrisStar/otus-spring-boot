@@ -15,7 +15,7 @@ public class ScannerServiceImpl implements ScannerService{
         return new Scanner(path);
     }
 
-    public Scanner getScannerIn() throws IOException {
+    public Scanner getScannerIn() {
         return new Scanner(System.in);
     }
 

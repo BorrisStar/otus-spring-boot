@@ -12,7 +12,7 @@ public class AnketaServiceImpl implements AnketaService {
 
     private final AnketaDao dao;
 
-    public AnketaServiceImpl(@Qualifier("anketaDaoSimple") AnketaDao dao) {
+    public AnketaServiceImpl(AnketaDao dao) {
         this.dao = dao;
     }
 
