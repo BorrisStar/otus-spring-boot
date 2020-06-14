@@ -1,10 +1,7 @@
-package domain;
-
-import org.springframework.stereotype.Component;
+package spring.domain;
 
 import java.util.List;
 
-@Component
 public class Question {
     private List<String> questionAndAnswers;
 

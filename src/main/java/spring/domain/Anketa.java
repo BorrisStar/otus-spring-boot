@@ -1,7 +1,6 @@
-package domain;
+package spring.domain;
 
 import org.springframework.stereotype.Component;
-import spring.domain.Question;
 
 import java.util.List;
 

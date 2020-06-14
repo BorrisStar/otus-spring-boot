@@ -1,8 +1,7 @@
-package service;
+package spring.service;
 
 import org.springframework.stereotype.Service;
 import spring.domain.Question;
-import spring.service.AnketaServiceImpl;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,11 +9,11 @@ import java.util.List;
 import java.util.Scanner;
 
 @Service
-public class StudentSurveyService {
+public class StudentSurveyServiceImpl implements StudentSurveyService {
 
-    private final AnketaServiceImpl anketaService;
+    private final AnketaService anketaService;
 
-    public StudentSurveyService(AnketaServiceImpl anketaService) {
+    public StudentSurveyServiceImpl(AnketaServiceImpl anketaService) {
         this.anketaService = anketaService;
     }
 
@@ -33,7 +32,7 @@ public class StudentSurveyService {
         System.out.println("Спасибо за участие в тестировании!");
     }
 
-    private List<Integer> getAnswers(Scanner in) {
+    public List<Integer> getAnswers(Scanner in) {
 
         List<Integer> answers = new ArrayList<>();
 
@@ -63,12 +62,12 @@ public class StudentSurveyService {
         return answers;
     }
 
-    private String getFIO(Scanner in, String s) {
+    public String getFIO(Scanner in, String s) {
         System.out.println(s);
         return in.nextLine();
     }
 
-    private void getSurveyResult(List<Integer> answers, String family, String name) {
+    public void getSurveyResult(List<Integer> answers, String family, String name) {
         System.out.println();
         System.out.println("ФИО:" + family + " " + name);
         System.out.println("Результаты теста:");

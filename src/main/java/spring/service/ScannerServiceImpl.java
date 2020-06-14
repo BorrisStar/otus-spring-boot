@@ -1,4 +1,4 @@
-package service;
+package spring.service;
 
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 @Service
-public class ScannerService {
+public class ScannerServiceImpl implements ScannerService{
 
     public Scanner getScannerWithPath(String filePath) throws IOException {
         Path path = Paths.get(filePath);

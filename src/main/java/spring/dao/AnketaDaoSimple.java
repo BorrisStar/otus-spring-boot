@@ -1,12 +1,12 @@
-package dao;
+package spring.dao;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
-import spring.dao.AnketaDao;
 import spring.domain.Anketa;
 import spring.domain.Question;
+import spring.service.ScannerService;
 import spring.service.ScannerServiceImpl;
 
 import javax.annotation.PostConstruct;
@@ -24,7 +24,7 @@ public class AnketaDaoSimple implements AnketaDao {
     private String filePath;
 
     private Anketa anketa;
-    private ScannerServiceImpl scannerService;
+    private ScannerService scannerService;
 
     public AnketaDaoSimple(Anketa anketa, ScannerServiceImpl scannerService) {
         this.anketa = anketa;

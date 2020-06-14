@@ -1,10 +1,9 @@
-package service;
+package spring.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import spring.dao.AnketaDao;
 import spring.domain.Question;
-import spring.service.AnketaService;
 
 import java.util.List;
 
