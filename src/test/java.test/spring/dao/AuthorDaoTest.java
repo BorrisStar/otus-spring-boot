@@ -22,7 +22,7 @@ public class AuthorDaoTest {
     @Test
     void findById_shouldFindExpectedAuthor() {
         Author author = authorDao.findById(1);
-        assertEquals(new Author("Andrey","Lukyanenko"), author);
+        assertEquals(new Author(1,"Andrey","Lukyanenko"), author);
     }
 
     @DisplayName(" должен сохранять информацию о нужном author")

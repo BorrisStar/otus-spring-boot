@@ -14,6 +14,14 @@ public class Book {
         this.year = year;
     }
 
+    public Book(long id, String title, long author, long genre, String year) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.year = year;
+    }
+
     public Book() {
     }
 

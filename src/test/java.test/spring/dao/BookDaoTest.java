@@ -22,7 +22,7 @@ public class BookDaoTest {
     @Test
     void findById_shouldFindExpectedBook() {
         Book book = bookDao.findById(1);
-        assertEquals(new Book("the night Watch", 1, 2, "1995"), book);
+        assertEquals(new Book(1,"the night Watch", 1, 2, "1995"), book);
     }
 
     @DisplayName(" должен сохранять информацию о нужном book")
