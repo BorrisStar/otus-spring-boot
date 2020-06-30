@@ -27,10 +27,10 @@ public class GenreDaoImpl implements GenreDao {
     private static String TABLE_NAME = "genre";
     private static String[] TABLE_COLUMNS = {"genre"};
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public GenreDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -51,13 +51,13 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public void delete(Genre domain) {
-        jdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
+        namedParameterJdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
     }
 
     @Override
     public Genre findById(long id) {
         try {
-            return jdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), genreRowMapper);
+            return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), genreRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
             throw e;
@@ -68,7 +68,7 @@ public class GenreDaoImpl implements GenreDao {
     public Genre findByGenre(String genre) {
         try {
             String param = getParameters(genre);
-            return jdbcTemplate.queryForObject(SqlQuery.SQL_QUERY_FIND_GENRE_BY_NAME, getNamedParameters("genre", param), genreRowMapper);
+            return namedParameterJdbcTemplate.queryForObject(SqlQuery.SQL_QUERY_FIND_GENRE_BY_NAME, getNamedParameters("genre", param), genreRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
             throw e;
@@ -77,7 +77,7 @@ public class GenreDaoImpl implements GenreDao {
 
     @Override
     public Iterable<Genre> findAll() {
-        return jdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), genreRowMapper);
+        return namedParameterJdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), genreRowMapper);
     }
 
     private RowMapper<Genre> genreRowMapper = (ResultSet rs, int rowNum) -> {
@@ -92,7 +92,7 @@ public class GenreDaoImpl implements GenreDao {
         SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
                 .addValue("id", genre.getId())
                 .addValue("genre", genre.getGenre());
-        jdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Number number = keyHolder.getKey();
         if (number == null) {
             return findById(genre.getId());

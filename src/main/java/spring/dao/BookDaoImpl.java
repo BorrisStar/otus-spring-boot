@@ -30,33 +30,33 @@ public class BookDaoImpl implements BookDao {
     private static String TABLE_NAME = "book";
     private static String[] TABLE_COLUMNS = {"title", "author", "genre", "year"};
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public BookDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
     public Iterable<Book> findByTitle(String title) {
         String param = getParameters(title);
-        return jdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_TITLE, getNamedParameters("title", param), bookRowMapper);
+        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_TITLE, getNamedParameters("title", param), bookRowMapper);
     }
 
     @Override
     public Iterable<Book> findByAuthor(String author) {
         String param = getParameters(author);
-        return jdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_AUTHOR, getNamedParameters("name", param), bookRowMapper);
+        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_AUTHOR, getNamedParameters("name", param), bookRowMapper);
     }
 
     @Override
     public Iterable<Book> findByGenre(String genre) {
         String param = getParameters(genre);
-        return jdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_GENRE, getNamedParameters("genre", param), bookRowMapper);
+        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_GENRE, getNamedParameters("genre", param), bookRowMapper);
     }
 
     @Override
     public List<Map<String, Object>> findAllWithAddInfo() {
-        return jdbcTemplate.queryForList(SqlQuery.SQL_QUERY_FIND_ALL_WITH_ADD_INFO, new HashMap<>());
+        return namedParameterJdbcTemplate.queryForList(SqlQuery.SQL_QUERY_FIND_ALL_WITH_ADD_INFO, new HashMap<>());
     }
 
     @Override
@@ -80,13 +80,13 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public void delete(Book domain) {
-        jdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
+        namedParameterJdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
     }
 
     @Override
     public Book findById(long id) {
         try {
-            return jdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), bookRowMapper);
+            return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), bookRowMapper);
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
@@ -94,7 +94,7 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public Iterable<Book> findAll() {
-        return jdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), bookRowMapper);
+        return namedParameterJdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), bookRowMapper);
     }
 
     private RowMapper<Book> bookRowMapper = (ResultSet rs, int rowNum) -> {
@@ -116,7 +116,7 @@ public class BookDaoImpl implements BookDao {
                 .addValue("author", book.getAuthor())
                 .addValue("genre", book.getGenre())
                 .addValue("year", book.getYear());
-        jdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Number number = keyHolder.getKey();
         if (number == null) {
             return findById(book.getId());

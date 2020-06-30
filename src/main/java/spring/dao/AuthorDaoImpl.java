@@ -28,10 +28,10 @@ public class AuthorDaoImpl implements AuthorDao {
     private static String TABLE_NAME = "author";
     private static String[] TABLE_COLUMNS = {"firstname", "lastname"};
 
-    private NamedParameterJdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     public AuthorDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.jdbcTemplate = namedParameterJdbcTemplate;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -53,13 +53,13 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void delete(Author author) {
-        jdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", author.getId()));
+        namedParameterJdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", author.getId()));
     }
 
     @Override
     public Author findById(long id) {
         try {
-            return jdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), authorRowMapper);
+            return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), authorRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
             throw e;
@@ -68,13 +68,13 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Iterable<Author> findAll() {
-        return jdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), authorRowMapper);
+        return namedParameterJdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), authorRowMapper);
     }
 
     @Override
     public Iterable<Author> findByName(String name) {
         String param = getParameters(name);
-        return jdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_AUTHOR_BY_NAME, getNamedParameters("name", param), authorRowMapper);
+        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_AUTHOR_BY_NAME, getNamedParameters("name", param), authorRowMapper);
     }
 
     private RowMapper<Author> authorRowMapper = (ResultSet rs, int rowNum) -> {
@@ -91,7 +91,7 @@ public class AuthorDaoImpl implements AuthorDao {
                 .addValue("id", author.getId())
                 .addValue("firstname", author.getFirstName())
                 .addValue("lastname", author.getLastName());
-        jdbcTemplate.update(sql, sqlParameterSource, keyHolder);
+        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
         Number number = keyHolder.getKey();
         if (number == null) {
             return findById(author.getId());
