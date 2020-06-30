@@ -3,13 +3,12 @@ package spring.model;
 public class Author {
 
     private long id;
-    private String firstName;
-    private String lastName;
+    private String firstname;
+    private String lastname;
 
-    public Author(long id, String firstName, String lastName) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+    public Author( String firstName, String lastName) {
+        this.firstname = firstName;
+        this.lastname = lastName;
     }
 
     public long getId() {
@@ -21,19 +20,19 @@ public class Author {
     }
 
     public String getFirstName() {
-        return firstName;
+        return firstname;
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName;
+        this.firstname = firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return lastname;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.lastname = lastName;
     }
 
     public Author() {
@@ -43,8 +42,28 @@ public class Author {
     public String toString() {
         return "Author{" +
                "id=" + id +
-               ", firstName='" + firstName + '\'' +
-               ", lastName='" + lastName + '\'' +
+               ", firstname='" + firstname + '\'' +
+               ", lastname='" + lastname + '\'' +
                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        Author author = (Author) o;
+
+        if (id != author.id) { return false; }
+        if (firstname != null ? !firstname.equals(author.firstname) : author.firstname != null) { return false; }
+        return lastname != null ? lastname.equals(author.lastname) : author.lastname == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
+        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
+        return result;
     }
 }

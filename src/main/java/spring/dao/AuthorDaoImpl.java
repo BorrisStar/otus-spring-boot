@@ -35,19 +35,19 @@ public class AuthorDaoImpl implements AuthorDao {
     }
 
     @Override
-    public Author save(Author domain) {
-        Author result = findById(domain.getId());
+    public Author save(Author author) {
+        Author result = findById(author.getId());
         if (result != null) {
-            result.setFirstName(domain.getFirstName());
-            result.setLastName(domain.getLastName());
+            result.setFirstName(author.getFirstName());
+            result.setLastName(author.getLastName());
             return createOrUpdate(result, prepareSqlQueryForUpdate(TABLE_NAME, TABLE_COLUMNS));
         }
-        return createOrUpdate(domain, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
+        return createOrUpdate(author, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
     }
 
     @Override
-    public Iterable<Author> save(Collection<Author> domains) {
-        domains.forEach(this::save);
+    public Iterable<Author> save(Collection<Author> authors) {
+        authors.forEach(this::save);
         return findAll();
     }
 
@@ -62,7 +62,7 @@ public class AuthorDaoImpl implements AuthorDao {
             return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), authorRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
-            throw e;
+            return null;
         }
     }
 

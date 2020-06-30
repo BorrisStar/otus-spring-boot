@@ -7,11 +7,10 @@ public class Book {
     private long genre;
     private String year;
 
-    public Book(long id, String title, long authorId, long genreId, String year) {
-        this.id = id;
+    public Book(String title, long author, long genre, String year) {
         this.title = title;
-        this.author = authorId;
-        this.genre = genreId;
+        this.author = author;
+        this.genre = genre;
         this.year = year;
     }
 
@@ -67,5 +66,29 @@ public class Book {
                ", genre=" + genre +
                ", year='" + year + '\'' +
                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        Book book = (Book) o;
+
+        if (id != book.id) { return false; }
+        if (author != book.author) { return false; }
+        if (genre != book.genre) { return false; }
+        if (title != null ? !title.equals(book.title) : book.title != null) { return false; }
+        return year != null ? year.equals(book.year) : book.year == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (int) (author ^ (author >>> 32));
+        result = 31 * result + (int) (genre ^ (genre >>> 32));
+        result = 31 * result + (year != null ? year.hashCode() : 0);
+        return result;
     }
 }

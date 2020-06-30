@@ -6,11 +6,11 @@ public interface StoreRepository<T> {
 
     T findById(long id);
 
-    void delete(T domain);
+    void delete(T object);
 
     Iterable<T> findAll();
 
-    T save(T domain);
+    T save(T object);
 
-    Iterable<T> save(Collection<T> domains);
+    Iterable<T> save(Collection<T> objects);
 }

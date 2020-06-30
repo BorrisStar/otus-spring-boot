@@ -33,11 +33,11 @@ public class SqlService {
     }
 
     public static String prepareSqlQueryForUpdate(String table, String[] params) {
-        String updateString = prepareSqlQueryForUpdate(params);
+        String updateString = prepareSqlQuery(params);
         return String.format("UPDATE %s SET %s WHERE id = :id", table, updateString);
     }
 
-    private static String prepareSqlQueryForUpdate(String[] params) {
+    private static String prepareSqlQuery(String[] params) {
         StringBuilder sb = new StringBuilder();
         Arrays.stream(params)
                 .forEach(s -> {

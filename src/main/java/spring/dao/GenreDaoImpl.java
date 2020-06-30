@@ -44,8 +44,8 @@ public class GenreDaoImpl implements GenreDao {
     }
 
     @Override
-    public Iterable<Genre> save(Collection<Genre> domains) {
-        domains.forEach(this::save);
+    public Iterable<Genre> save(Collection<Genre> genres) {
+        genres.forEach(this::save);
         return findAll();
     }
 
@@ -60,7 +60,7 @@ public class GenreDaoImpl implements GenreDao {
             return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), genreRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
-            throw e;
+            return null;
         }
     }
 
@@ -71,7 +71,7 @@ public class GenreDaoImpl implements GenreDao {
             return namedParameterJdbcTemplate.queryForObject(SqlQuery.SQL_QUERY_FIND_GENRE_BY_NAME, getNamedParameters("genre", param), genreRowMapper);
         } catch (EmptyResultDataAccessException e) {
             e.printStackTrace();
-            throw e;
+            return null;
         }
     }
 

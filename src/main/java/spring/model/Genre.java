@@ -4,8 +4,7 @@ public class Genre {
     private long id;
     private String genre;
 
-    public Genre(long id, String genre) {
-        this.id = id;
+    public Genre(String genre) {
         this.genre = genre;
     }
 
@@ -35,5 +34,23 @@ public class Genre {
                "id=" + id +
                ", genre='" + genre + '\'' +
                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) { return true; }
+        if (o == null || getClass() != o.getClass()) { return false; }
+
+        Genre genre1 = (Genre) o;
+
+        if (id != genre1.id) { return false; }
+        return genre != null ? genre.equals(genre1.genre) : genre1.genre == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + (genre != null ? genre.hashCode() : 0);
+        return result;
     }
 }

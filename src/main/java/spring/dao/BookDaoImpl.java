@@ -60,21 +60,21 @@ public class BookDaoImpl implements BookDao {
     }
 
     @Override
-    public Book save(Book domain) {
-        Book result = findById(domain.getId());
+    public Book save(Book book) {
+        Book result = findById(book.getId());
         if (result != null) {
-            result.setTitle(domain.getTitle());
-            result.setAuthor(domain.getAuthor());
-            result.setGenre(domain.getGenre());
-            result.setYear(domain.getYear());
+            result.setTitle(book.getTitle());
+            result.setAuthor(book.getAuthor());
+            result.setGenre(book.getGenre());
+            result.setYear(book.getYear());
             return createOrUpdate(result, prepareSqlQueryForUpdate(TABLE_NAME, TABLE_COLUMNS));
         }
-        return createOrUpdate(domain, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
+        return createOrUpdate(book, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
     }
 
     @Override
-    public Iterable<Book> save(Collection<Book> domains) {
-        domains.forEach(this::save);
+    public Iterable<Book> save(Collection<Book> books) {
+        books.forEach(this::save);
         return findAll();
     }
 
@@ -87,7 +87,8 @@ public class BookDaoImpl implements BookDao {
     public Book findById(long id) {
         try {
             return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), bookRowMapper);
-        } catch (EmptyResultDataAccessException ex) {
+        } catch (EmptyResultDataAccessException e) {
+            e.printStackTrace();
             return null;
         }
     }
