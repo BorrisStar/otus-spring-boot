@@ -1,103 +1,58 @@
 package spring.dao;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import spring.model.Genre;
-import spring.model.SqlQuery;
 
-import java.sql.ResultSet;
-import java.util.Collection;
-
-import static spring.service.SqlService.getNamedParameters;
-import static spring.service.SqlService.getParameters;
-import static spring.service.SqlService.prepareSqlQueryForDelete;
-import static spring.service.SqlService.prepareSqlQueryForFindAll;
-import static spring.service.SqlService.prepareSqlQueryForFindById;
-import static spring.service.SqlService.prepareSqlQueryForInsert;
-import static spring.service.SqlService.prepareSqlQueryForUpdate;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class GenreDaoImpl implements GenreDao {
-    private static String TABLE_NAME = "genre";
-    private static String[] TABLE_COLUMNS = {"genre"};
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @PersistenceContext
+    private EntityManager em;
 
-    public GenreDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    @Override
+    public Optional<Genre> findByGenre(String genre) {
+        TypedQuery<Genre> query = em.createQuery("select s " +
+                                                  "from Genre s " +
+                                                  "where s.genre = :genre",
+                Genre.class);
+        query.setParameter("genre", genre);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
-    public Genre save(Genre genre) {
-        Genre result = findById(genre.getId());
-        if (result != null) {
-            result.setGenre(genre.getGenre());
-            return createOrUpdate(result, prepareSqlQueryForUpdate(TABLE_NAME, TABLE_COLUMNS));
-        }
-        return createOrUpdate(genre, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
+    public Optional<Genre> findById(long id) {
+        return Optional.ofNullable(em.find(Genre.class, id));
     }
 
     @Override
-    public Iterable<Genre> save(Collection<Genre> genres) {
-        genres.forEach(this::save);
-        return findAll();
+    public void delete(Genre object) {
+        Query query = em.createQuery("delete " +
+                                     "from Genre s " +
+                                     "where s.id = :id");
+        query.setParameter("id", object.getId());
+        query.executeUpdate();
     }
 
     @Override
-    public void delete(Genre domain) {
-        namedParameterJdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
+    public List<Genre> findAll() {
+        TypedQuery<Genre> query = em.createQuery("select s from Genre s", Genre.class);
+        return query.getResultList();
     }
 
     @Override
-    public Genre findById(long id) {
-        try {
-            return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), genreRowMapper);
-        } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public Genre findByGenre(String genre) {
-        try {
-            String param = getParameters(genre);
-            return namedParameterJdbcTemplate.queryForObject(SqlQuery.SQL_QUERY_FIND_GENRE_BY_NAME, getNamedParameters("genre", param), genreRowMapper);
-        } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @Override
-    public Iterable<Genre> findAll() {
-        return namedParameterJdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), genreRowMapper);
-    }
-
-    private RowMapper<Genre> genreRowMapper = (ResultSet rs, int rowNum) -> {
-        Genre genre = new Genre();
-        genre.setId(rs.getLong("id"));
-        genre.setGenre(rs.getString("genre"));
-        return genre;
-    };
-
-    private Genre createOrUpdate(Genre genre, String sql) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", genre.getId())
-                .addValue("genre", genre.getGenre());
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        Number number = keyHolder.getKey();
-        if (number == null) {
-            return findById(genre.getId());
+    public Genre save(Genre object) {
+        if (object.getId() <= 0) {
+            em.persist(object);
+            return object;
         } else {
-            return findById(number.longValue());
+            return em.merge(object);
         }
     }
 }

@@ -25,3 +25,10 @@ CREATE TABLE book
     FOREIGN KEY (author) REFERENCES author (id) ON DELETE CASCADE,
     FOREIGN KEY (genre) REFERENCES genre (id) ON DELETE CASCADE
 );
+
+CREATE TABLE comment
+(
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    text TEXT,
+    book_id bigint not null references book(id) on delete cascade
+);

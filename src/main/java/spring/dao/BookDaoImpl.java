@@ -1,128 +1,89 @@
 package spring.dao;
 
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+
 import org.springframework.stereotype.Repository;
+import spring.model.Author;
 import spring.model.Book;
-import spring.model.SqlQuery;
+import spring.model.Genre;
 
-import java.sql.ResultSet;
-import java.util.Collection;
-import java.util.HashMap;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-
-import static spring.service.SqlService.getNamedParameters;
-import static spring.service.SqlService.getParameters;
-import static spring.service.SqlService.prepareSqlQueryForDelete;
-import static spring.service.SqlService.prepareSqlQueryForFindAll;
-import static spring.service.SqlService.prepareSqlQueryForFindById;
-import static spring.service.SqlService.prepareSqlQueryForInsert;
-import static spring.service.SqlService.prepareSqlQueryForUpdate;
+import java.util.Optional;
 
 @Repository
 public class BookDaoImpl implements BookDao {
-    private static String TABLE_NAME = "book";
-    private static String[] TABLE_COLUMNS = {"title", "author", "genre", "year"};
 
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    @PersistenceContext
+    private EntityManager em;
 
-    public BookDaoImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
+
+    public BookDaoImpl(AuthorDao authorDao, GenreDao genreDao) {
+        this.authorDao = authorDao;
+        this.genreDao = genreDao;
     }
 
     @Override
-    public Iterable<Book> findByTitle(String title) {
-        String param = getParameters(title);
-        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_TITLE, getNamedParameters("title", param), bookRowMapper);
+    public Optional<Book> findByTitle(String title) {
+        TypedQuery<Book> query = em.createQuery("select s from Book s where s.title = :title", Book.class);
+        query.setParameter("title", title);
+        return Optional.ofNullable(query.getSingleResult());
     }
 
     @Override
-    public Iterable<Book> findByAuthor(String author) {
-        String param = getParameters(author);
-        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_AUTHOR, getNamedParameters("name", param), bookRowMapper);
-    }
-
-    @Override
-    public Iterable<Book> findByGenre(String genre) {
-        String param = getParameters(genre);
-        return namedParameterJdbcTemplate.query(SqlQuery.SQL_QUERY_FIND_BY_GENRE, getNamedParameters("genre", param), bookRowMapper);
-    }
-
-    @Override
-    public List<Map<String, Object>> findAllWithAddInfo() {
-        return namedParameterJdbcTemplate.queryForList(SqlQuery.SQL_QUERY_FIND_ALL_WITH_ADD_INFO, new HashMap<>());
-    }
-
-    @Override
-    public Book save(Book book) {
-        Book result = findById(book.getId());
-        if (result != null) {
-            result.setTitle(book.getTitle());
-            result.setAuthor(book.getAuthor());
-            result.setGenre(book.getGenre());
-            result.setYear(book.getYear());
-            return createOrUpdate(result, prepareSqlQueryForUpdate(TABLE_NAME, TABLE_COLUMNS));
+    public List<Book> findByAuthor(String lastname) {
+        Optional<Author> author = authorDao.findByName(lastname);
+        if(author.isPresent()){
+            TypedQuery<Book> query = em.createQuery("select s from Book s where s.author = :author", Book.class);
+            query.setParameter("author", author.get().getId());
+            return query.getResultList();
         }
-        return createOrUpdate(book, prepareSqlQueryForInsert(TABLE_NAME, TABLE_COLUMNS));
+        return Collections.emptyList();
     }
 
     @Override
-    public Iterable<Book> save(Collection<Book> books) {
-        books.forEach(this::save);
-        return findAll();
-    }
-
-    @Override
-    public void delete(Book domain) {
-        namedParameterJdbcTemplate.update(prepareSqlQueryForDelete(TABLE_NAME), getNamedParameters("id", domain.getId()));
-    }
-
-    @Override
-    public Book findById(long id) {
-        try {
-            return namedParameterJdbcTemplate.queryForObject(prepareSqlQueryForFindById(TABLE_NAME), getNamedParameters("id", id), bookRowMapper);
-        } catch (EmptyResultDataAccessException e) {
-            e.printStackTrace();
-            return null;
+    public List<Book> findByGenre(String name) {
+        Optional<Genre> genre = genreDao.findByGenre(name);
+        if(genre.isPresent()){
+            TypedQuery<Book> query = em.createQuery("select s from Book s where s.genre = :genre", Book.class);
+            query.setParameter("genre", genre.get().getId());
+            return query.getResultList();
         }
+        return Collections.emptyList();
     }
 
     @Override
-    public Iterable<Book> findAll() {
-        return namedParameterJdbcTemplate.query(prepareSqlQueryForFindAll(TABLE_NAME), bookRowMapper);
+    public Optional<Book> findById(long id) {
+        return Optional.ofNullable(em.find(Book.class, id));
     }
 
-    private RowMapper<Book> bookRowMapper = (ResultSet rs, int rowNum) -> {
-        Book book = new Book();
-        book.setId(rs.getLong("id"));
-        book.setTitle(rs.getString("title"));
-        book.setAuthor(rs.getLong("author"));
-        book.setGenre(rs.getLong("genre"));
-        book.setYear(rs.getString("year"));
-        return book;
-    };
+    @Override
+    public void delete(Book object) {
+        Query query = em.createQuery("delete " +
+                                     "from Book s " +
+                                     "where s.id = :id");
+        query.setParameter("id", object.getId());
+        query.executeUpdate();
+    }
 
-    private Book createOrUpdate(Book book, String sql) {
-        long bookId = book.getId();
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        SqlParameterSource sqlParameterSource = new MapSqlParameterSource()
-                .addValue("id", bookId)
-                .addValue("title", book.getTitle())
-                .addValue("author", book.getAuthor())
-                .addValue("genre", book.getGenre())
-                .addValue("year", book.getYear());
-        namedParameterJdbcTemplate.update(sql, sqlParameterSource, keyHolder);
-        Number number = keyHolder.getKey();
-        if (number == null) {
-            return findById(book.getId());
+    @Override
+    public List<Book> findAll() {
+        TypedQuery<Book> query = em.createQuery("select s from Book s", Book.class);
+        return query.getResultList();
+    }
+
+    @Override
+    public Book save(Book object) {
+        if (object.getId() <= 0) {
+            em.persist(object);
+            return object;
         } else {
-            return findById(number.longValue());
+            return em.merge(object);
         }
     }
 }
