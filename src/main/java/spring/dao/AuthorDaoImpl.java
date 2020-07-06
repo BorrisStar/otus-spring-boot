@@ -5,7 +5,6 @@ import spring.model.Author;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -33,11 +32,7 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public void delete(Author object) {
-        Query query = em.createQuery("delete " +
-                                     "from Author s " +
-                                     "where s.id = :id");
-        query.setParameter("id", object.getId());
-        query.executeUpdate();
+        em.remove(object);
     }
 
     @Override

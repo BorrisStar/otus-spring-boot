@@ -1,11 +1,11 @@
 package spring.dao;
 
 import org.springframework.stereotype.Repository;
+import spring.model.Book;
 import spring.model.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Optional;
@@ -24,11 +24,7 @@ public class CommentDaoImpl implements CommentDao {
 
     @Override
     public void delete(Comment object) {
-        Query query = em.createQuery("delete " +
-                                     "from Comment s " +
-                                     "where s.id = :id");
-        query.setParameter("id", object.getId());
-        query.executeUpdate();
+        em.remove(object);
     }
 
     @Override
@@ -38,11 +34,8 @@ public class CommentDaoImpl implements CommentDao {
     }
 
     @Override
-    public List<Comment> findAllByTitle(String title) {
-
-        TypedQuery<Comment> query = em.createQuery("select s from Comment s where s.book.title = :title", Comment.class);
-        query.setParameter("title", title);
-        return query.getResultList();
+    public List<Comment> findAllByBook(Book book) {
+        return book.getCommentList();
     }
 
     @Override

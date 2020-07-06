@@ -17,17 +17,14 @@ public class AuthorDaoService {
         this.authorDao = authorDao;
     }
 
-    @Transactional(readOnly = true)
     public Optional<Author> findByName(String lastname) {
         return authorDao.findByName(lastname);
     }
 
-    @Transactional(readOnly = true)
     public Optional<Author> findById(long id) {
         return authorDao.findById(id);
     }
 
-    @Transactional(readOnly = true)
     public List<Author> findAll() {
         return authorDao.findAll();
     }

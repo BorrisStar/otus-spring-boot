@@ -3,6 +3,7 @@ package spring.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import spring.dao.CommentDao;
+import spring.model.Book;
 import spring.model.Comment;
 
 import java.util.List;
@@ -17,7 +18,6 @@ public class CommentDaoService {
         this.commentDao = commentDao;
     }
 
-    @Transactional(readOnly = true)
     public Optional<Comment> findById(long id) {
         return commentDao.findById(id);
     }
@@ -27,14 +27,12 @@ public class CommentDaoService {
         commentDao.delete(object);
     }
 
-    @Transactional(readOnly = true)
     public List<Comment> findAll() {
         return commentDao.findAll();
     }
 
-    @Transactional(readOnly = true)
-    public List<Comment> findAllForBook(String title) {
-        return commentDao.findAllByTitle(title);
+    public List<Comment> findAllForBook(Book book) {
+        return commentDao.findAllByBook(book);
     }
 
     @Transactional()

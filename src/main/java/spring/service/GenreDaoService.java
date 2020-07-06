@@ -17,12 +17,10 @@ public class GenreDaoService {
         this.genreDao = genreDao;
     }
 
-    @Transactional(readOnly = true)
     public Optional<Genre> findByGenre(String genre) {
         return genreDao.findByGenre(genre);
     }
 
-    @Transactional(readOnly = true)
     public Optional<Genre> findById(long id) {
         return genreDao.findById(id);
     }
@@ -32,7 +30,6 @@ public class GenreDaoService {
         genreDao.delete(object);
     }
 
-    @Transactional(readOnly = true)
     public List<Genre> findAll() {
         return genreDao.findAll();
     }

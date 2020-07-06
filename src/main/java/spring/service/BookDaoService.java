@@ -17,22 +17,18 @@ public class BookDaoService {
         this.bookDao = bookDao;
     }
 
-    @Transactional(readOnly = true)
     public Optional<Book> findByTitle(String title) {
         return bookDao.findByTitle(title);
     }
 
-    @Transactional(readOnly = true)
     public List<Book> findByAuthor(String lastname) {
         return bookDao.findByAuthor(lastname);
     }
 
-    @Transactional(readOnly = true)
     public List<Book> findByGenre(String genre) {
         return bookDao.findByGenre(genre);
     }
 
-    @Transactional(readOnly = true)
     public Optional<Book> findById(long id) {
         return bookDao.findById(id);
     }
@@ -42,7 +38,6 @@ public class BookDaoService {
         bookDao.delete(object);
     }
 
-    @Transactional(readOnly = true)
     public List<Book> findAll() {
         return bookDao.findAll();
     }
