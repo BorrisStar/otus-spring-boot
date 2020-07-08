@@ -32,7 +32,7 @@ public class CommentDaoService {
     }
 
     public List<Comment> findAllForBook(Book book) {
-        return commentDao.findAllByBook(book);
+        return book.getCommentList();
     }
 
     @Transactional()

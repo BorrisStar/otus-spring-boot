@@ -14,8 +14,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ComponentScan("src.main.java.spring")
-@Import(CommentDaoImpl.class)
+@Import({CommentDaoImpl.class, AuthorDaoImpl.class, BookDaoImpl.class, GenreDaoImpl.class})
 public class CommentDaoTest {
+
+    @Autowired
+    private BookDaoImpl bookDao;
 
     @Autowired
     private CommentDaoImpl commentDao;
@@ -31,9 +34,9 @@ public class CommentDaoTest {
     @Test
     void findById_correctResult() {
 
-        List<Comment> result = commentDao.findAllByTitle("the night Watch");
+        Optional<Comment> result = commentDao.findById(1L);
 
-        assertEquals(2, result.size());
+        assertEquals(1L, result.get().getId());
     }
 
     @Test

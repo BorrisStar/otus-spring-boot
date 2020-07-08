@@ -1,7 +1,6 @@
 package spring.dao;
 
 import org.springframework.stereotype.Repository;
-import spring.model.Book;
 import spring.model.Comment;
 
 import javax.persistence.EntityManager;
@@ -31,11 +30,6 @@ public class CommentDaoImpl implements CommentDao {
     public List<Comment> findAll() {
         TypedQuery<Comment> query = em.createQuery("select s from Comment s", Comment.class);
         return query.getResultList();
-    }
-
-    @Override
-    public List<Comment> findAllByBook(Book book) {
-        return book.getCommentList();
     }
 
     @Override
