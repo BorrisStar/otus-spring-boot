@@ -12,7 +12,6 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Genre {
@@ -35,5 +34,13 @@ public class Genre {
 
     public Genre() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Genre{" +
+               "id=" + id +
+               ", genre='" + genre + '\'' +
+               '}';
     }
 }

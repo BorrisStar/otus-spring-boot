@@ -4,7 +4,6 @@ import org.h2.tools.Console;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
-import spring.model.Book;
 import spring.model.Comment;
 import spring.model.Genre;
 
@@ -28,8 +27,8 @@ public class ConsoleService {
     }
 
     @ShellMethod(key = "show comments for book", value = "Show comments for book")
-    public void showCommentsForBook(Book book) {
-        commentDaoService.findAllForBook(book).forEach(g -> System.out.println(g.toString()));
+    public void showCommentsForBook(Long bookId) {
+        commentDaoService.findAllForBook(bookId).forEach(g -> System.out.println(g.toString()));
     }
 
     @ShellMethod(key = "show comments", value = "Show comments")

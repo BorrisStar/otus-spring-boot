@@ -12,7 +12,6 @@ import javax.persistence.Id;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Author {
@@ -37,5 +36,14 @@ public class Author {
     }
 
     public Author() {
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" +
+               "id=" + id +
+               ", firstname='" + firstname + '\'' +
+               ", lastname='" + lastname + '\'' +
+               '}';
     }
 }

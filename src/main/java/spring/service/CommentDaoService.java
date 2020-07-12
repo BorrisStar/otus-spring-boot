@@ -6,16 +6,19 @@ import spring.dao.CommentDao;
 import spring.model.Book;
 import spring.model.Comment;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class CommentDaoService {
+    private final BookDaoService bookDaoService;
 
     private final CommentDao commentDao;
 
-    public CommentDaoService(CommentDao commentDao) {
+    public CommentDaoService(CommentDao commentDao,  BookDaoService bookDaoService) {
         this.commentDao = commentDao;
+        this.bookDaoService = bookDaoService;
     }
 
     public Optional<Comment> findById(long id) {
@@ -31,8 +34,13 @@ public class CommentDaoService {
         return commentDao.findAll();
     }
 
-    public List<Comment> findAllForBook(Book book) {
-        return book.getCommentList();
+    public List<Comment> findAllForBook(Long bookId) {
+        Optional <Book> book = bookDaoService.findById(bookId);
+        if( book.isPresent()){
+            return book.get().getCommentList();
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     @Transactional()

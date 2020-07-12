@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 
 @Getter
 @Setter
-@ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Comment {
@@ -32,5 +31,14 @@ public class Comment {
     private Book book;
 
     public Comment() {
+    }
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+               "id=" + id +
+               ", text='" + text + '\'' +
+               ", book=" + book +
+               '}';
     }
 }
