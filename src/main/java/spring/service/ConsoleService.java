@@ -4,6 +4,8 @@ import org.h2.tools.Console;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
+import spring.model.Author;
+import spring.model.Book;
 import spring.model.Comment;
 import spring.model.Genre;
 
@@ -26,9 +28,10 @@ public class ConsoleService {
         this.commentDaoService = commentDaoService;
     }
 
-    @ShellMethod(key = "show comments for book", value = "Show comments for book")
-    public void showCommentsForBook(Long bookId) {
-        commentDaoService.findAllForBook(bookId).forEach(g -> System.out.println(g.toString()));
+    @ShellMethod(key = "show comments for book title", value = "Show comments for book")
+    public void showCommentsForBook(String title) {
+        Optional<Book> book = bookDaoService.findByTitle(title);
+        book.ifPresent(value -> commentDaoService.findAllForBook(value.getId()).forEach(g -> System.out.println(g.toString())));
     }
 
     @ShellMethod(key = "show comments", value = "Show comments")
@@ -70,6 +73,13 @@ public class ConsoleService {
     public void findGenreByName( String genre) {
         System.out.println(genreDaoService.findByGenre(genre));
     }
+
+    @ShellMethod(key = "show books by author lastname", value = "Show comments")
+    public void showBooks(String lastname) {
+        Optional<Author> author = authorDaoService.findByLastname(lastname);
+        author.ifPresent(value -> bookDaoService.findBooksByAuthor(value.getId()).forEach(g -> System.out.println(g.toString())));
+    }
+
 
     @ShellMethod(key = "delete genre", value = "Delete genre by name")
     public void deleteGenreByName( String name) {

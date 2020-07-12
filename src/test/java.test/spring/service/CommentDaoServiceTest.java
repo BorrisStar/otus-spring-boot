@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
-import spring.dao.AuthorDaoImpl;
-import spring.dao.BookDaoImpl;
-import spring.dao.CommentDaoImpl;
-import spring.dao.GenreDaoImpl;
+import spring.dao.AuthorDao;
+import spring.dao.BookDao;
+import spring.dao.CommentDao;
+import spring.dao.GenreDao;
 import spring.model.Comment;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataJpaTest
 @ComponentScan("src.main.java.spring")
-@Import({CommentDaoImpl.class, CommentDaoService.class, AuthorDaoImpl.class, BookDaoImpl.class, GenreDaoImpl.class})
+@Import({CommentDao.class, CommentDaoService.class, AuthorDao.class, BookDao.class, GenreDao.class})
 public class CommentDaoServiceTest {
 
     @Autowired

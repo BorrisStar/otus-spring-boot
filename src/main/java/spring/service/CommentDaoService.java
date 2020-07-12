@@ -21,17 +21,8 @@ public class CommentDaoService {
         this.bookDaoService = bookDaoService;
     }
 
-    public Optional<Comment> findById(long id) {
-        return commentDao.findById(id);
-    }
-
-    @Transactional()
-    public void delete(Comment object) {
-        commentDao.delete(object);
-    }
-
     public List<Comment> findAll() {
-        return commentDao.findAll();
+        return (List<Comment>) commentDao.findAll();
     }
 
     public List<Comment> findAllForBook(Long bookId) {

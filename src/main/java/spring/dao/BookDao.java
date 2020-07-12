@@ -1,15 +1,13 @@
 package spring.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import spring.model.Book;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface BookDao extends StoreRepository<Book>{
+public interface BookDao extends CrudRepository<Book, Long> {
 
     Optional<Book> findByTitle(String title);
-
-    List<Book> findByAuthor(String author);
-
-    List<Book> findByGenre(String genre);
+    List<Book> findBooksByAuthor(long author);
 }

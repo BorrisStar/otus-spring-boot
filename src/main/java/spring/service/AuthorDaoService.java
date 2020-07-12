@@ -1,7 +1,6 @@
 package spring.service;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.dao.AuthorDao;
 import spring.model.Author;
 
@@ -17,25 +16,11 @@ public class AuthorDaoService {
         this.authorDao = authorDao;
     }
 
-    public Optional<Author> findByName(String lastname) {
-        return authorDao.findByName(lastname);
-    }
-
-    public Optional<Author> findById(long id) {
-        return authorDao.findById(id);
-    }
-
     public List<Author> findAll() {
-        return authorDao.findAll();
+        return (List<Author>) authorDao.findAll();
     }
 
-    @Transactional
-    public void delete(Author object) {
-        authorDao.delete(object);
-    }
-
-    @Transactional
-    public Author save(Author object) {
-        return authorDao.save(object);
+    public Optional<Author> findByLastname(String lastname) {
+        return authorDao.findByLastname(lastname);
     }
 }

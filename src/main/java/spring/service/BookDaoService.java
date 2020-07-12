@@ -2,7 +2,6 @@ package spring.service;
 
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import spring.dao.BookDao;
 import spring.model.Book;
 
@@ -17,34 +16,19 @@ public class BookDaoService {
         this.bookDao = bookDao;
     }
 
-    public Optional<Book> findByTitle(String title) {
-        return bookDao.findByTitle(title);
-    }
-
-    public List<Book> findByAuthor(String lastname) {
-        return bookDao.findByAuthor(lastname);
-    }
-
-    public List<Book> findByGenre(String genre) {
-        return bookDao.findByGenre(genre);
-    }
-
-
     public Optional<Book> findById(long id) {
         return bookDao.findById(id);
     }
+    public Optional<Book> findByTitle(String title){
+        return bookDao.findByTitle(title);
+    }
 
-    @Transactional
-    public void delete(Book object) {
-        bookDao.delete(object);
+    public List<Book> findBooksByAuthor(long author){
+        return bookDao.findBooksByAuthor(author);
     }
 
     public List<Book> findAll() {
-        return bookDao.findAll();
+        return (List<Book>) bookDao.findAll();
     }
 
-    @Transactional
-    public Book save(Book object) {
-        return bookDao.save(object);
-    }
 }

@@ -31,11 +31,11 @@ public class GenreDaoService {
     }
 
     public List<Genre> findAll() {
-        return genreDao.findAll();
+        return (List<Genre>) genreDao.findAll();
     }
 
     @Transactional()
-    public Genre save(Genre object) {
-        return genreDao.save(object);
+    public void save(Genre object) {
+        genreDao.save(object);
     }
 }
