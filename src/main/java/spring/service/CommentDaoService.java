@@ -1,6 +1,8 @@
 package spring.service;
 
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import spring.dao.CommentDao;
 import spring.model.Book;
@@ -24,17 +26,19 @@ public class CommentDaoService {
     public List<Comment> findAll() {
         return (List<Comment>) commentDao.findAll();
     }
-
+    @Transactional(propagation= Propagation.REQUIRES_NEW)
     public List<Comment> findAllForBook(Long bookId) {
         Optional <Book> book = bookDaoService.findById(bookId);
         if( book.isPresent()){
-            return book.get().getCommentList();
+            Book bookProxy = book.get();
+            Hibernate.initialize(bookProxy.getCommentList());
+            return bookProxy.getCommentList();
         } else {
             return Collections.emptyList();
         }
     }
 
-    @Transactional()
+    @Transactional
     public Comment save(Comment object) {
         return commentDao.save(object);
     }

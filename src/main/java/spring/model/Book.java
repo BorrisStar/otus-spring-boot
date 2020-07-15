@@ -7,7 +7,6 @@ import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -33,7 +32,7 @@ public class Book {
     private String year;
 
     @Setter
-    @OneToMany(mappedBy = "book", fetch= FetchType.EAGER, cascade= CascadeType.ALL)
+    @OneToMany(mappedBy = "book", cascade= CascadeType.ALL)
     private List<Comment> commentList = new ArrayList<>();
 
     public Book(String title, long author, long genre, String year) {
