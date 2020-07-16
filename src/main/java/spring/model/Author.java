@@ -1,8 +1,26 @@
 package spring.model;
 
-public class Author {
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Author {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @ToString.Include
+    @EqualsAndHashCode.Include
     private long id;
+
     private String firstname;
     private String lastname;
 
@@ -17,30 +35,6 @@ public class Author {
         this.lastname = lastname;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstname;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstname = firstName;
-    }
-
-    public String getLastName() {
-        return lastname;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastname = lastName;
-    }
-
     public Author() {
     }
 
@@ -51,25 +45,5 @@ public class Author {
                ", firstname='" + firstname + '\'' +
                ", lastname='" + lastname + '\'' +
                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) { return true; }
-        if (o == null || getClass() != o.getClass()) { return false; }
-
-        Author author = (Author) o;
-
-        if (id != author.id) { return false; }
-        if (firstname != null ? !firstname.equals(author.firstname) : author.firstname != null) { return false; }
-        return lastname != null ? lastname.equals(author.lastname) : author.lastname == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (firstname != null ? firstname.hashCode() : 0);
-        result = 31 * result + (lastname != null ? lastname.hashCode() : 0);
-        return result;
     }
 }

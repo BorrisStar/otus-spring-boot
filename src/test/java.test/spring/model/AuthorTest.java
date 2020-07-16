@@ -9,7 +9,7 @@ public class AuthorTest {
     void constructor_correctObject() {
         Author author = new Author("firstName", "lastName");
 
-        assertEquals("firstName", author.getFirstName());
-        assertEquals("lastName", author.getLastName());
+        assertEquals("firstName", author.getFirstname());
+        assertEquals("lastName", author.getLastname());
     }
 }

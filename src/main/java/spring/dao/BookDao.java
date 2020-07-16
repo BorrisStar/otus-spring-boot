@@ -3,17 +3,13 @@ package spring.dao;
 import spring.model.Book;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 public interface BookDao extends StoreRepository<Book>{
 
-    List<Map<String, Object>> findAllWithAddInfo();
+    Optional<Book> findByTitle(String title);
 
-    Iterable<Book> findByTitle(String title);
+    List<Book> findByAuthor(String author);
 
-    Iterable<Book> findByAuthor(String author);
-
-    Iterable<Book> findByGenre(String genre);
-
-
+    List<Book> findByGenre(String genre);
 }

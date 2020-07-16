@@ -22,3 +22,12 @@ INSERT INTO book(title, author, genre, year)
 VALUES ('The miracle near Moscow', 2, 1, '2017');
 INSERT INTO book(title, author, genre, year)
 VALUES ('Oxford Dictionary', 3, 3, '2010');
+
+INSERT INTO comment( text, book_id)
+VALUES ('Unbelievable!', 1);
+INSERT INTO comment( text, book_id)
+VALUES ('Fantastic!', 1);
+INSERT INTO comment( text, book_id)
+VALUES ('So-so...', 2);
+INSERT INTO comment( text, book_id)
+VALUES ('So boring...', 3);
