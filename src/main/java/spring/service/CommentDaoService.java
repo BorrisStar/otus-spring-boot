@@ -1,6 +1,5 @@
 package spring.service;
 
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,9 +29,7 @@ public class CommentDaoService {
     public List<Comment> findAllForBook(Long bookId) {
         Optional <Book> book = bookDaoService.findById(bookId);
         if( book.isPresent()){
-            Book bookProxy = book.get();
-            Hibernate.initialize(bookProxy.getCommentList());
-            return bookProxy.getCommentList();
+            return book.get().getCommentList();
         } else {
             return Collections.emptyList();
         }
