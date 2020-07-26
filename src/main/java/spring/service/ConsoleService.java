@@ -1,6 +1,5 @@
 package spring.service;
 
-import org.h2.tools.Console;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,6 @@ import spring.model.Book;
 import spring.model.Comment;
 import spring.model.Genre;
 
-import java.sql.SQLException;
 import java.util.Optional;
 
 @Service
@@ -96,9 +94,4 @@ public class ConsoleService {
         genreDaoService.save(genre);
     }
 
-
-    @ShellMethod(key = "run h2console", value = "Start H2 console")
-    public void dbConsole() throws SQLException {
-        Console.main();
-    }
 }

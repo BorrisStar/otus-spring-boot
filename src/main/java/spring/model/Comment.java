@@ -4,32 +4,28 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
+@Document(collection = "comment")
 public class Comment {
+    @Transient
+    public static final String SEQUENCE_NAME ="comments_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
     @EqualsAndHashCode.Include
     private long id;
 
     private String text;
 
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "book_id", referencedColumnName = "id")
-    private Book book;
-
+    public Comment(String text) {
+        this.text = text;
+    }
     public Comment() {
     }
 
@@ -38,7 +34,6 @@ public class Comment {
         return "Comment{" +
                "id=" + id +
                ", text='" + text + '\'' +
-               ", book=" + book +
                '}';
     }
 }

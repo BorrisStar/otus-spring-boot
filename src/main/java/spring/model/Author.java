@@ -4,19 +4,21 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
+@Document(collection = "author")
 public class Author {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "authors_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
     @EqualsAndHashCode.Include
     private long id;
@@ -27,12 +29,6 @@ public class Author {
     public Author( String firstName, String lastName) {
         this.firstname = firstName;
         this.lastname = lastName;
-    }
-
-    public Author(long id, String firstname, String lastname) {
-        this.id = id;
-        this.firstname = firstname;
-        this.lastname = lastname;
     }
 
     public Author() {

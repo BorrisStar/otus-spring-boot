@@ -4,13 +4,11 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +16,12 @@ import java.util.List;
 @Setter
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@Entity
+@Document(collection = "book")
 public class Book {
+    @Transient
+    public static final String SEQUENCE_NAME = "books_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
     @EqualsAndHashCode.Include
     private long id;
@@ -31,15 +31,15 @@ public class Book {
     private long genre;
     private String year;
 
-    @Setter
-    @OneToMany(mappedBy = "book", cascade= CascadeType.ALL)
+    @DBRef
     private List<Comment> commentList = new ArrayList<>();
 
-    public Book(String title, long author, long genre, String year) {
+    public Book(String title, long author, long genre, String year, List<Comment> commentList) {
         this.title = title;
         this.author = author;
         this.genre = genre;
         this.year = year;
+        this.commentList = commentList;
     }
 
     public Book(long id, String title, long author, long genre, String year) {
