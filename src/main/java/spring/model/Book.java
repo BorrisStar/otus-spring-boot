@@ -24,11 +24,11 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @ToString.Include
     @EqualsAndHashCode.Include
-    private long id;
+    private Long id;
 
     private String title;
-    private long author;
-    private long genre;
+    private Long author;
+    private Long genre;
     private String year;
 
     @Setter

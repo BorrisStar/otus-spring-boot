@@ -23,4 +23,8 @@ public class AuthorDaoService {
     public Optional<Author> findByLastname(String lastname) {
         return authorDao.findByLastname(lastname);
     }
+
+    public Optional<Author> findById(long id) {
+        return authorDao.findById(id);
+    }
 }
