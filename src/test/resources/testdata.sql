@@ -33,6 +33,4 @@ INSERT INTO comment( text, book_id)
 VALUES ('So boring...', 3);
 
 INSERT INTO users( email, first_name, last_name, password, role, status)
-VALUES ('admin@mail.ru', 'Sudo','Sudov','$2y$12$He8C.IyngGgxn1kGx2JvbeDNSnWhaNi3qQXiLmxslXif56OJcj7Ry' ,'ADMIN','ACTIVE' );
-INSERT INTO users( email, first_name, last_name, password, role, status)
-VALUES ('user@mail.ru', 'User','Notsudov','$2y$12$qtUK5nLGj1.xe8F6JRtgaeQphvVXq9nWlb.dMU/IIa1v6F74x7yle' ,'ADMIN','ACTIVE' );
+VALUES ('admin@mail.ru', 'Admin','Admin','$2y$12$He8C.IyngGgxn1kGx2JvbeDNSnWhaNi3qQXiLmxslXif56OJcj7Ry' ,'ADMIN','ACTIVE' );
