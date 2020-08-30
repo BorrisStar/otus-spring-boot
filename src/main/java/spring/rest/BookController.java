@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("books")
+@RequestMapping("/api/books")
 public class BookController {
     private final BookDaoService bookDaoService;
     private final EntityDtoConverterService entityDtoConverterService;

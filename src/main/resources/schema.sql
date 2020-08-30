@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS author;
 DROP TABLE IF EXISTS genre;
+DROP TABLE IF EXISTS users;
 
 CREATE TABLE author
 (
@@ -31,4 +32,15 @@ CREATE TABLE comment
     id        BIGINT PRIMARY KEY AUTO_INCREMENT,
     text TEXT,
     book_id bigint not null references book(id) on delete cascade
+);
+
+CREATE TABLE users
+(
+    id        BIGINT PRIMARY KEY AUTO_INCREMENT,
+    email VARCHAR(50) NOT NULL,
+    password  VARCHAR(255) NOT NULL,
+    first_name VARCHAR(50) NOT NULL,
+    last_name  VARCHAR(50) NOT NULL,
+    role VARCHAR(50) NOT NULL,
+    status  VARCHAR(50) NOT NULL
 );
