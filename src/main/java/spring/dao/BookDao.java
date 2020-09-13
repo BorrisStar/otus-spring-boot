@@ -1,13 +1,8 @@
 package spring.dao;
 
-import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import spring.model.Book;
 
-public interface BookDao extends ReactiveMongoRepository<Book, Long> {
+public interface BookDao extends MongoRepository<Book, Long> {
 
-    Flux<Book> findBooksByAuthor(long author);
-
-    Mono<Void> deleteById(Long id);
 }
