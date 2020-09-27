@@ -23,16 +23,25 @@ VALUES ('The miracle near Moscow', 2, 1, '2017');
 INSERT INTO book(title, author, genre, year)
 VALUES ('Oxford Dictionary', 3, 3, '2010');
 
-INSERT INTO comment( text, book_id)
+INSERT INTO comment(text, book_id)
 VALUES ('Unbelievable!', 1);
-INSERT INTO comment( text, book_id)
+INSERT INTO comment(text, book_id)
 VALUES ('Fantastic!', 1);
-INSERT INTO comment( text, book_id)
+INSERT INTO comment(text, book_id)
 VALUES ('So-so...', 2);
-INSERT INTO comment( text, book_id)
+INSERT INTO comment(text, book_id)
 VALUES ('So boring...', 3);
 
-INSERT INTO users( email, first_name, last_name, password, role, status)
-VALUES ('admin@mail.ru', 'Sudo','Sudov','$2y$12$He8C.IyngGgxn1kGx2JvbeDNSnWhaNi3qQXiLmxslXif56OJcj7Ry' ,'ADMIN','ACTIVE' );
-INSERT INTO users( email, first_name, last_name, password, role, status)
-VALUES ('user@mail.ru', 'User','Notsudov','$2y$12$qtUK5nLGj1.xe8F6JRtgaeQphvVXq9nWlb.dMU/IIa1v6F74x7yle' ,'ADMIN','ACTIVE' );
+INSERT INTO users (id, username, password)
+VALUES (1, 'admin', 'password');
+INSERT INTO users (id, username, password)
+VALUES (2, 'user1', 'user1');
+INSERT INTO users (id, username, password)
+VALUES (3, 'user2', 'user2');
+
+INSERT INTO user_role (user_id, roles)
+VALUES (1, 'ADMIN');
+INSERT INTO user_role (user_id, roles)
+VALUES (2, 'USER');
+INSERT INTO user_role (user_id, roles)
+VALUES (3, 'BANNED')

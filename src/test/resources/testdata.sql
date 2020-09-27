@@ -31,6 +31,3 @@ INSERT INTO comment( text, book_id)
 VALUES ('So-so...', 2);
 INSERT INTO comment( text, book_id)
 VALUES ('So boring...', 3);
-
-INSERT INTO users( email, first_name, last_name, password, role, status)
-VALUES ('admin@mail.ru', 'Admin','Admin','$2y$12$He8C.IyngGgxn1kGx2JvbeDNSnWhaNi3qQXiLmxslXif56OJcj7Ry' ,'ADMIN','ACTIVE' );
