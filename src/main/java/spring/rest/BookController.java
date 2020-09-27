@@ -3,6 +3,7 @@ package spring.rest;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("books")
+@RequestMapping("/api/books")
 public class BookController {
     private final BookDaoService bookDaoService;
     private final EntityDtoConverterService entityDtoConverterService;
@@ -46,6 +47,7 @@ public class BookController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("id") Long id) {
         //Можно сначала проверить наличие Book с таким title
@@ -78,6 +80,7 @@ public class BookController {
         return ResponseEntity.ok(result);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/edit")
     public ResponseEntity<?> update(BookDto bookDto) {
         Book book = entityDtoConverterService.toBook(bookDto);
